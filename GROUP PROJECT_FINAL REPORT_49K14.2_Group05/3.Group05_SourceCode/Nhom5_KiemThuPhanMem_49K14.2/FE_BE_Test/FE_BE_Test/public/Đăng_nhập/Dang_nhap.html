@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng nhập - Quản lý phòng trọ</title>
+    <link rel="stylesheet" href="Dang_nhap.css">
+    <script src="./Dang_nhap.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-box">
+            <div class="icon-lock">
+                <i class="fa-solid fa-lock"></i>
+            </div>
+            
+            <div id="login-section">
+                <h2>Đăng nhập</h2>
+                <p>Nhập số điện thoại và mật khẩu để đăng nhập</p>
+                <form id="loginForm">
+                    <div id="form-error" class="error-text form-error"></div>
+                    
+                    <div class="input-group">
+                        <label>Tên đăng nhập</label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-phone"></i>
+                            <input type="text" id="log-username" placeholder="Nhập tên đăng nhập">
+                        </div>
+                        <div id="username-error" class="error-text"></div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Mật khẩu</label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-key"></i>
+                            <input type="password" id="log-password" placeholder="Nhập mật khẩu">
+                        </div>
+                        <div id="password-error" class="error-text"></div>
+                    </div>
+                    
+                    <button type="button" class="btn-login" onclick="handleLogin()">Đăng nhập</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="Dang_nhap.js"></script>
+</body>
+</html>

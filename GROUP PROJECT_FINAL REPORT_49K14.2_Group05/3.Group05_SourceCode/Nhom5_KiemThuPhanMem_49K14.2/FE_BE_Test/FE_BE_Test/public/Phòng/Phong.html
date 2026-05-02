@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Quản Lý Phòng Trọ</title>
+    <link rel="stylesheet" href="Phong.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .error-text {
+            color: #DB000A;
+            font-size: 12px;
+            margin-top: 4px;
+            min-height: 15px;
+            display: block;
+            text-align: left;
+        }
+
+        .bg-gray-input {
+            background-color: #f2f2f2;
+            pointer-events: none;
+        }
+
+        .success-text {
+            color: #15803d;
+        }
+    </style>
+</head>
+
+<body class="bg-main">
+    <header class="navbar" style="background-color: #DB000A;">
+        <div class="logo" style="color: white; font-weight: bold;">QUẢN LÝ PHÒNG TRỌ</div>
+        <nav>
+            <ul style="list-style: none; display: flex;">
+                <li><a href="../Phòng/Phong.html" class="active"
+                        style="color: white; text-decoration: none; margin: 0 15px;">Phòng</a></li>
+                <li><a href="../Hợp_Đồng/Hop_dong.html" style="color: white; text-decoration: none; margin: 0 15px;">Hợp
+                        Đồng</a></li>
+                <li><a href="#" style="color: white; text-decoration: none; margin: 0 15px;">Hóa Đơn</a></li>
+                <li><a href="#" style="color: white; text-decoration: none; margin: 0 15px;">Dịch Vụ</a></li>
+                <li><a href="../Khách_thuê/Khach_thue.html"
+                        style="color: white; text-decoration: none; margin: 0 15px;">Khách Thuê</a></li>
+            </ul>
+        </nav>
+        <div class="user-info"
+            style="position: relative; cursor: pointer; right: 25px; display: flex; align-items: center;"
+            onclick="toggleLogout(event)">
+            <span class="avatar"
+                style="background:#ccc; width:35px; height:35px; border-radius:50%; display:flex; align-items:center; justify-content:center; margin-right:10px;">CT</span>
+            <span class="username" style="color:white;">Chủ trọ</span>
+            <div id="logoutMenu" class="logout-popup"
+                style="display:none; position:absolute; top:100%; right:0; background:white; padding:10px; border-radius:4px; box-shadow:0 2px 5px rgba(0,0,0,0.2);">
+                <a href="../Đăng_nhập/Dang_nhap.html" style="color:#333; text-decoration:none;"><i
+                        class="fa-solid fa-right-from-bracket"></i> Đăng xuất</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="title-section"
+            style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; padding: 20px;">
+            <div class="title-left" style="display:flex; align-items:center;">
+                <div class="icon-box"
+                    style="background:#DB000A; color:white; padding:12px; border-radius:8px; margin-right:15px; font-size:24px;">
+                    <i class="fa-solid fa-house-chimney"></i>
+                </div>
+                <div>
+                    <h1 style="margin:0;">Quản lý phòng trọ</h1>
+                    <p style="margin:0; color:#666;">Quản lý thông tin phòng trọ</p>
+                </div>
+            </div>
+            <button class="btn-add" onclick="openAddModal()"
+                style="background:#DB000A; color:white; border:none; padding:10px 20px; border-radius:8px; cursor:pointer; font-weight:bold;">
+                <i class="fa-solid fa-circle-plus"></i> Thêm phòng
+            </button>
+        </div>
+
+        <div class="stats-grid" style="display:flex; gap:20px; padding: 0 20px; margin-bottom: 30px;">
+            <div class="stat-card"
+                style="flex:1; background:#E9F5FD; border: 1px solid #b6ddff; padding:20px; border-radius:12px; display:flex; justify-content:space-between; align-items:center; box-shadow: 0 4px 6px rgba(0,0,0,0.02);">
+                <div>
+                    <p style="margin:0; color:#888; font-size: 14px; font-weight: 500;">Tổng số phòng</p>
+                    <h3 id="statTotal" style="margin:5px 0 0; font-size:28px; font-weight: bold; color: #333;">0</h3>
+                </div>
+                <i class="fa-solid fa-house-chimney" style="font-size:35px; color:#DB000A; opacity: 0.8;"></i>
+            </div>
+            <div class="stat-card"
+                style="flex:1; background:#FDECEC; border: 1px solid #fda2c3; padding:20px; border-radius:12px; display:flex; justify-content:space-between; align-items:center; box-shadow: 0 4px 6px rgba(0,0,0,0.02);">
+                <div>
+                    <p style=" margin:0; color:#888; font-size: 14px; font-weight: 500;">Phòng trống</p>
+                    <h3 id="statEmpty" style="margin:5px 0 0; font-size:28px; font-weight: bold; color: #333;">0</h3>
+                </div>
+                <i class="fa-solid fa-house" style="font-size:35px; color:#DB000A; opacity: 0.8;"></i>
+            </div>
+            <div class="stat-card"
+                style="flex:1; background:#E6FDE3; border: 1px solid #97fea1; padding:20px; border-radius:12px; display:flex; justify-content:space-between; align-items:center; box-shadow: 0 4px 6px rgba(0,0,0,0.02);">
+                <div>
+                    <p style=" margin:0; color:#888; font-size: 14px; font-weight: 500;">Đang thuê</p>
+                    <h3 id="statRented" style="margin:5px 0 0; font-size:28px; font-weight: bold; color: #333;">0</h3>
+                </div>
+                <i class="fa-solid fa-user-group" style="font-size:35px; color:#2e7d32; opacity: 0.8;"></i>
+            </div>
+        </div>
+
+        <div class="search-section" style="padding: 0 20px; margin-bottom: 25px;">
+            <div class="search-box" style="position:relative; width: 320px;">
+                <i class="fa-solid fa-magnifying-glass" style="position:absolute; left:15px; top:12px; color:#999;"></i>
+                <input type="text" id="searchInput" placeholder="Tìm kiếm theo mã phòng..."
+                    style="width:100%; padding:10px 10px 10px 40px; border:1px solid #ddd; border-radius:8px; outline:none; background: #f9f9f9;">
+            </div>
+            <div id="search-error" class="error-text" style="font-size:14px; margin-top: 5px;"></div>
+        </div>
+
+        <div class="room-grid" id="roomContainer"
+            style="display:grid; grid-template-columns:repeat(auto-fill, minmax(300px, 1fr)); gap:20px;">
+            <!-- Dữ liệu render từ JS -->
+        </div>
+        </div>
+    </main>
+
+    <!-- Modal Thêm/Sửa Phòng -->
+    <div id="modal-form" class="modal"
+        style="display:none; position:fixed; z-index:1000; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.5);">
+        <div class="modal-content"
+            style="background:white; width:600px; margin:50px auto; border-radius:12px; overflow:hidden;">
+            <div class="modal-header"
+                style="background:#DB000A; color:white; padding:15px 20px; display:flex; justify-content:space-between; align-items:center;">
+                <h3 id="modalTitle" style="margin:0;">Thêm phòng</h3>
+                <span style="font-size:24px; cursor:pointer;" onclick="closeModal('modal-form')">&times;</span>
+            </div>
+            <div class="modal-body" style="padding:20px;">
+                <div style="display:flex; gap:20px; margin-bottom:15px;">
+                    <div style="flex:1;">
+                        <label style="font-weight:bold; font-size:14px;">Mã phòng <span
+                                style="color:#DB000A;">*</span></label>
+                        <input type="text" id="inpMaPhong" placeholder="Nhập mã phòng"
+                            style="width:100%; padding:10px; margin-top:5px; border:1px solid #ccc; border-radius:6px; box-sizing:border-box;">
+                        <div class="error-text" id="errMaPhong"></div>
+                    </div>
+                    <div style="flex:1;">
+                        <label style="font-weight:bold; font-size:14px;">Diện tích (m²) <span
+                                style="color:#DB000A;">*</span></label>
+                        <input type="text" id="inpDienTich" placeholder="Nhập diện tích"
+                            style="width:100%; padding:10px; margin-top:5px; border:1px solid #ccc; border-radius:6px; box-sizing:border-box;">
+                        <div class="error-text" id="errDienTich"></div>
+                    </div>
+                </div>
+                <div style="display:flex; gap:20px; margin-bottom:15px;">
+                    <div style="flex:1;">
+                        <label style="font-weight:bold; font-size:14px;">Số người tối đa <span
+                                style="color:#DB000A;">*</span></label>
+                        <input type="text" id="inpSoNguoi" placeholder="Nhập SL người tối đa"
+                            style="width:100%; padding:10px; margin-top:5px; border:1px solid #ccc; border-radius:6px; box-sizing:border-box;">
+                        <div class="error-text" id="errSoNguoi"></div>
+                    </div>
+                    <div style="flex:1;">
+                        <label style="font-weight:bold; font-size:14px;">Giá thuê (VNĐ) <span
+                                style="color:#DB000A;">*</span></label>
+                        <input type="text" id="inpGiaThue" placeholder="Nhập giá thuê"
+                            style="width:100%; padding:10px; margin-top:5px; border:1px solid #ccc; border-radius:6px; box-sizing:border-box;">
+                        <div class="error-text" id="errGiaThue"></div>
+                    </div>
+                </div>
+                <div style="margin-bottom:15px;">
+                    <label style="font-weight:bold; font-size:14px;">Trạng thái</label>
+                    <select id="inpTrangThai" class="bg-gray-input" disabled
+                        style="width:100%; padding:10px; margin-top:5px; border:1px solid #ccc; border-radius:6px; box-sizing:border-box;">
+                        <option value="Trống">Trống</option>
+                        <option value="Đang thuê">Đang thuê</option>
+                    </select>
+                </div>
+                <div style="margin-bottom:15px;">
+                    <label style="font-weight:bold; font-size:14px;">Mô tả</label>
+                    <textarea id="inpMoTa" placeholder="Mô tả thêm về phòng (nếu có)"
+                        style="width:100%; padding:10px; margin-top:5px; border:1px solid #ccc; border-radius:6px; height:80px; box-sizing:border-box; resize:none;"></textarea>
+                </div>
+                <div class="error-text" id="errFormGeneral"
+                    style="text-align:center; font-weight:bold; font-size:14px;"></div>
+            </div>
+            <div class="modal-footer"
+                style="padding:15px 20px; background:#f9f9f9; display:flex; justify-content:center; gap:15px;">
+                <button onclick="promptCancelForm()"
+                    style="background:#DB000A; color:white; border:none; padding:10px 35px; border-radius:6px; cursor:pointer; font-weight:bold;">Hủy</button>
+                <button id="btnSaveAction"
+                    style="background:#22c55e; color:white; border:none; padding:10px 35px; border-radius:6px; cursor:pointer; font-weight:bold;">Lưu</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Hủy Nhập liệu -->
+    <div id="modal-cancel-confirm" class="modal"
+        style="display:none; position:fixed; z-index:1001; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.5);">
+        <div class="status-card"
+            style="background:white; width:350px; margin:200px auto; padding:30px; border-radius:12px; text-align:center;">
+            <p style="font-weight:bold; font-size:18px;">Bạn có chắc chắn muốn hủy?</p>
+            <div class="modal-footer"
+                style="padding:0; margin-top:20px; display:flex; justify-content:center; gap:15px;">
+                <button onclick="closeModal('modal-cancel-confirm')"
+                    style="background:#DB000A; color:white; border:none; padding:8px 30px; border-radius:6px; cursor:pointer; font-weight:bold;">Hủy</button>
+                <button onclick="confirmCancelForm()"
+                    style="background:#22c55e; color:white; border:none; padding:8px 30px; border-radius:6px; cursor:pointer; font-weight:bold;">Xác
+                    nhận</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Xóa -->
+    <div id="modal-delete" class="modal"
+        style="display:none; position:fixed; z-index:1002; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.5);">
+        <div class="status-card"
+            style="background:white; width:350px; margin:200px auto; padding:30px; border-radius:12px; text-align:center;">
+            <div
+                style="background:#ffebeb; color:#DB000A; border:2px solid #DB000A; width:60px; height:60px; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 20px; font-size:30px;">
+                <i class="fa-solid fa-xmark"></i>
+            </div>
+            <p style="font-weight:bold; font-size:18px;">Bạn có chắc chắn muốn xóa phòng?</p>
+            <div class="error-text" id="errDelete" style="text-align:center; margin-top:10px;"></div>
+            <div class="modal-footer"
+                style="padding:0; margin-top:20px; display:flex; justify-content:center; gap:15px;">
+                <button onclick="closeModal('modal-delete')"
+                    style="background:#DB000A; color:white; border:none; padding:8px 30px; border-radius:6px; cursor:pointer; font-weight:bold;">Hủy</button>
+                <button id="btnConfirmDelete"
+                    style="background:#22c55e; color:white; border:none; padding:8px 30px; border-radius:6px; cursor:pointer; font-weight:bold;">Đồng
+                    ý</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Trạng Thái Chung -->
+    <div id="modal-status" class="modal"
+        style="display:none; position:fixed; z-index:9999; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.5);">
+        <div class="status-card"
+            style="background:white; width:350px; margin:200px auto; padding:30px; border-radius:12px; text-align:center;">
+            <div id="statusIcon"></div>
+            <p id="statusMsg" style="font-weight:500; margin:15px 0;"></p>
+            <button onclick="closeModal('modal-status')"
+                style="background:#DB000A; color:white; border:none; padding:8px 30px; border-radius:6px; cursor:pointer; font-weight:bold; margin-top:10px;">Đóng</button>
+        </div>
+    </div>
+
+    <!-- Modal Chi tiết phòng -->
+    <!-- <div id="modal-detail" class="modal"
+        style="display:none; position:fixed; z-index:1003; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.5);">
+        <div class="status-card"
+            style="background:white; width:450px; margin:150px auto; padding:30px; border-radius:12px; text-align:left;">
+            <h3 style="margin-top:0; margin-bottom: 20px; text-align: center; color: #DB000A; font-size: 20px;">Chi tiết
+                Phòng</h3>
+            <p style="margin-bottom:10px; font-size: 16px;"><strong>Mã phòng:</strong> <span id="detMa"></span></p>
+            <p style="margin-bottom:10px; font-size: 16px;"><strong>Diện tích:</strong> <span id="detDienTich"></span>
+                m²</p>
+            <p style="margin-bottom:10px; font-size: 16px;"><strong>Số người tối đa:</strong> <span
+                    id="detSoNguoi"></span></p>
+            <p style="margin-bottom:10px; font-size: 16px;"><strong>Giá thuê:</strong> <span id="detGia"></span> VNĐ</p>
+            <p style="margin-bottom:10px; font-size: 16px;"><strong>Trạng thái:</strong> <span id="detTrangThai"></span>
+            </p>
+            <p style="margin-bottom:10px; font-size: 16px;"><strong>Mô tả:</strong> <span id="detMoTa"></span></p>
+            <div class="modal-footer" style="padding:0; margin-top:25px; text-align:center;">
+                <button onclick="closeModal('modal-detail')"
+                    style="background:#22c55e; color:white; border:none; padding:10px 40px; border-radius:6px; cursor:pointer; font-weight:bold; font-size: 16px;">Đóng</button>
+            </div>
+        </div>
+    </div> -->
+
+    <script src="Phong.js"></script>
+</body>
+
+</html>

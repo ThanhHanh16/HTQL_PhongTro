@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+
+<suite name="Automation Report Suite">
+
+    <listeners>
+        <listener class-name="common.TestListener"/>
+    </listeners>
+
+    <test name="Automation Test Cases">
+        <classes>
+            <class name="testcase.KhachThue.TimKT"/>
+            <class name="testcase.KhachThue.ThemKT"/>
+            <class name="testcase.KhachThue.SuaKT"/>
+            <class name="testcase.KhachThue.XoaKT"/>
+
+            <class name="testcase.HopDong.TimHD"/>
+            <class name="testcase.HopDong.ThemHD"/>
+            <class name="testcase.HopDong.XoaHD"/>
+        </classes>
+    </test>
+
+</suite>
